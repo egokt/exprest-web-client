@@ -17,26 +17,19 @@ module.exports = {
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
-        extensionAlias: {
-            '.js': ['.js', '.ts'],
-        },
+        extensionAlias: { '.js': ['.js', '.ts'], },
     },
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: [
-                    {
-                        loader: 'ts-loader',
-                    }
-                ],
+                use: [ { loader: 'ts-loader', } ],
                 exclude: /node_modules/,
-            }
-        ]
+            },
+        ],
     },
     devtool : 'inline-source-map',
-    externals: [
-    ],
+    externals: [ ],
     plugins: [
         new TypescriptDeclarationPlugin({
             removeMergedDeclarations: true,
