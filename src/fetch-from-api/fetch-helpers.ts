@@ -1,4 +1,4 @@
-import { ApiResponse } from "@egokt/exprest-shared";
+import { ApiResponse } from "exprest-shared";
 import { configuration } from "./configuration.js";
 
 export async function fetchFromApi<T>(request: Request, options?: RequestInit) : Promise<ApiResponse<T>> {

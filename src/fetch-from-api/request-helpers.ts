@@ -68,24 +68,15 @@ export function getCollectionRequest(resourceUrl: string, queryParams: Object = 
 export const getSingletonRequest = getCollectionRequest;
 
 /**
- * Returns a create request for a singleton resource (i.e. a post).
+ * Returns a create request for a singleton resource or for creating an entity (i.e. a post).
  * 
  * @param resourceUrl Url of the singleton resource.
  * @param data Create data (sent as post body).
  * @returns Request object that can be used with fetch.
  */
-export function createSingletonRequest(resourceUrl: string, data: any, queryParams: Object = {}) {
+export function createRequest(resourceUrl: string, data: any, queryParams: Object = {}) {
     return postRequest({url: buildUrl(resourceUrl, queryParams), data});
 }
-
-/**
- * Returns a create request for an entity in a collection resource (i.e. a post).
- * 
- * @param resourceUrl Url of the collection resource.
- * @param data Create data (sent as post body).
- * @returns Request object that can be used with fetch.
- */
-export const createEntityRequest = createSingletonRequest;
 
 /**
  * Returns an update request for a singleton resource (i.e. a put).
@@ -133,6 +124,17 @@ export function updateEntityRequest<ID = number>(collectionUrl: string, id: ID, 
  */
 export function deleteEntityRequest<ID = number>(collectionUrl: string, id: ID, queryParams: Object = {}) {
     return deleteRequest({url: buildUrl(`${collectionUrl}/${id}`, queryParams)});
+}
+
+/**
+ * Delete a singleton.
+ * 
+ * @param resourceUrl Url of the resource.
+ * @param queryParams Request object that can be used with fetch.
+ * @returns Request object that can be used with fetch.
+ */
+export function deleteSingletonRequest(resourceUrl: string, queryParams: Object = {}) {
+    return deleteRequest({url: buildUrl(resourceUrl, queryParams)});
 }
 
 /**

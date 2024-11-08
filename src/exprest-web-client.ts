@@ -8,31 +8,55 @@ export {
     getRequest,
     getCollectionRequest,
     getSingletonRequest,
-    createSingletonRequest,
+    createRequest,
     updateSingletonRequest,
     getEntityRequest,
-    createEntityRequest,
     updateEntityRequest,
     deleteEntityRequest,
     buildUrl,
 } from "./fetch-from-api/request-helpers.js";
 
-// This doesn't work with the typescript declerations webpack plugin we are currently using.
-// export type {
-//     GetRequest,
-//     ActionRequest,
-//     ActionRequestWithBody,
-// } from './types/request-types.js';
-import {
-    GetRequest as GetRequestType,
-    ActionRequest as ActionRequestType,
-    ActionRequestWithBody as ActionRequestWithBodyType,
-} from './types/request-types.js';
-export type GetRequest<PARAMS extends {[key: string]: true} | null = null> = GetRequestType<PARAMS>;
-export type ActionRequest<BODY extends Object | null, PARAMS extends {[key: string]: true} | null = null> = ActionRequestType<BODY, PARAMS>;
-export type ActionRequestWithBody<BODY extends Object> = ActionRequestWithBodyType<BODY>;
-
-export { ActionEndpointClient } from './endpoint-clients/action-endpoint-client.js';
-export { ActionEndpointClientWithBody } from './endpoint-clients/action-endpoint-client.js';
-export { GetCollectionEndpointClient } from './endpoint-clients/collection-get-endpoint-client.js';
-export { GetSingletonEndpointClient } from './endpoint-clients/singleton-get-endpoint-client.js';
+export { 
+    ActionClient,
+    ActionClientWithParams,
+    ActionClientWithBody,
+    ActionClientWithBodyWithParams,
+} from './endpoint-clients/action-client.js';
+export {
+    CreateClient,
+    CreateClientWithParams,
+    CreateClientWithBody,
+    CreateClientWithBodyWithParams,
+} from './endpoint-clients/create-client.js';
+export {
+    DeleteEntityClient,
+    DeleteEntityClientWithParams,
+} from './endpoint-clients/delete-entity-client.js';
+export {
+    DeleteSingletonClient,
+    DeleteSingletonClientWithParams,
+} from './endpoint-clients/delete-singleton-client.js';
+export {
+    GetCollectionClient,
+    GetCollectionClientWithParams,
+} from './endpoint-clients/get-collection-client.js';
+export {
+    GetEntityClient,
+    GetEntityClientWithParams,
+} from './endpoint-clients/get-entity-client.js';
+export {
+    GetSingletonClient,
+    GetSingletonClientWithParams,
+} from './endpoint-clients/get-singleton-client.js';
+export {
+    UpdateEntityClient,
+    UpdateEntityClientWithParams,
+    UpdateEntityClientWithBody,
+    UpdateEntityClientWithBodyWithParams,
+} from './endpoint-clients/update-entity-client.js';
+export {
+    UpdateSingletonClient,
+    UpdateSingletonClientWithParams,
+    UpdateSingletonClientWithBody,
+    UpdateSingletonClientWithBodyWithParams,
+} from './endpoint-clients/update-singleton-client.js';
