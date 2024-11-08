@@ -21,42 +21,68 @@ export {
     ActionClientWithParams,
     ActionClientWithBody,
     ActionClientWithBodyWithParams,
+    ActionClientWithAuth,
+    ActionClientWithAuthWithParams,
+    ActionClientWithAuthWithBody,
+    ActionClientWithAuthWithBodyWithParams,
 } from './endpoint-clients/action-client.js';
 export {
     CreateClient,
     CreateClientWithParams,
     CreateClientWithBody,
     CreateClientWithBodyWithParams,
+    CreateClientWithAuth,
+    CreateClientWithAuthWithParams,
+    CreateClientWithAuthWithBody,
+    CreateClientWithAuthWithBodyWithParams,
 } from './endpoint-clients/create-client.js';
 export {
     DeleteEntityClient,
     DeleteEntityClientWithParams,
+    DeleteEntityClientWithAuth,
+    DeleteEntityClientWithAuthWithParams,
 } from './endpoint-clients/delete-entity-client.js';
 export {
     DeleteSingletonClient,
     DeleteSingletonClientWithParams,
+    DeleteSingletonClientWithAuth,
+    DeleteSingletonClientWithAuthWithParams,
 } from './endpoint-clients/delete-singleton-client.js';
 export {
     GetCollectionClient,
     GetCollectionClientWithParams,
+    GetCollectionClientWithAuth,
+    GetCollectionClientWithAuthWithParams,
 } from './endpoint-clients/get-collection-client.js';
 export {
     GetEntityClient,
     GetEntityClientWithParams,
+    GetEntityClientWithAuth,
+    GetEntityClientWithAuthWithParams,
 } from './endpoint-clients/get-entity-client.js';
 export {
     GetSingletonClient,
     GetSingletonClientWithParams,
+    GetSingletonClientWithAuth,
+    GetSingletonClientWithAuthWithParams,
 } from './endpoint-clients/get-singleton-client.js';
 export {
     UpdateEntityClient,
     UpdateEntityClientWithParams,
     UpdateEntityClientWithBody,
     UpdateEntityClientWithBodyWithParams,
+    UpdateEntityClientWithAuth,
+    UpdateEntityClientWithAuthWithParams,
+    UpdateEntityClientWithAuthWithBody,
+    UpdateEntityClientWithAuthWithBodyWithParams,
 } from './endpoint-clients/update-entity-client.js';
 export {
     UpdateSingletonClient,
     UpdateSingletonClientWithParams,
     UpdateSingletonClientWithBody,
     UpdateSingletonClientWithBodyWithParams,
+    UpdateSingletonClientWithAuth,
+    UpdateSingletonClientWithAuthWithParams,
+    UpdateSingletonClientWithAuthWithBody,
+    UpdateSingletonClientWithAuthWithBodyWithParams,
 } from './endpoint-clients/update-singleton-client.js';

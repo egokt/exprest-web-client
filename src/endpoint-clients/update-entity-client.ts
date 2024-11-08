@@ -1,5 +1,5 @@
 import { ApiResponse } from "exprest-shared";
-import { fetchFromApi } from "../fetch-from-api/fetch-helpers.js";
+import { fetchFromApi, fetchFromApiWithAuth } from "../fetch-from-api/fetch-helpers.js";
 import { EndpointClient } from "./endpoint-client.js";
 import {
     RequestBuilderWithId,
@@ -14,6 +14,13 @@ export class UpdateEntityClient<ApiReturnType extends Object | null, ID = number
     request: RequestBuilderWithId<ID> = (id: ID) => { return updateEntityRequest(this.url, id, {}); } 
 }
 
+export class UpdateEntityClientWithAuth<ApiReturnType extends Object | null, ID = number> extends EndpointClient {
+    async fetch(setLoggedOutFunction: () => void, id: ID): Promise<ApiResponse<ApiReturnType>> {
+        return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request(id));
+    }
+    request: RequestBuilderWithId<ID> = (id: ID) => { return updateEntityRequest(this.url, id, {}); } 
+}
+
 export class UpdateEntityClientWithParams<
     ApiReturnType extends Object | null,
     QueryParamsType extends {[key: string]: string},
@@ -21,6 +28,25 @@ export class UpdateEntityClientWithParams<
 > extends EndpointClient {
     async fetch(id: ID, params: {[key in keyof QueryParamsType]?: string}): Promise<ApiResponse<ApiReturnType>> {
         return fetchFromApi<ApiReturnType>(this.request(id, params));
+    }
+
+    request: RequestBuilderWithIdWithParams<QueryParamsType, ID> =
+        (id: ID, params: {[key in keyof QueryParamsType]?: string}) => {
+            return updateEntityRequest(this.url, id, {}, params);
+        }
+}
+
+export class UpdateEntityClientWithAuthWithParams<
+    ApiReturnType extends Object | null,
+    QueryParamsType extends {[key: string]: string},
+    ID = number,
+> extends EndpointClient {
+    async fetch(
+        setLoggedOutFunction: () => void,
+        id: ID,
+        params: {[key in keyof QueryParamsType]?: string}
+    ): Promise<ApiResponse<ApiReturnType>> {
+        return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request(id, params));
     }
 
     request: RequestBuilderWithIdWithParams<QueryParamsType, ID> =
@@ -43,6 +69,24 @@ export class UpdateEntityClientWithBody<
     } 
 }
 
+export class UpdateEntityClientWithAuthWithBody<
+    ApiReturnType extends Object | null,
+    QueryBodyType extends Object,
+    ID = number,
+> extends EndpointClient {
+    async fetch(
+        setLoggedOutFunction: () => void,
+        id: ID,
+        data: QueryBodyType
+    ): Promise<ApiResponse<ApiReturnType>> {
+        return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request(id, data));
+    }
+
+    request: RequestBuilderWithIdWithBody<QueryBodyType, ID> = (id: ID, data: QueryBodyType) => {
+        return updateEntityRequest(this.url, id, data);
+    } 
+}
+
 export class UpdateEntityClientWithBodyWithParams<
     ApiReturnType extends Object | null,
     QueryParamsType extends {[key: string]: string},
@@ -51,6 +95,27 @@ export class UpdateEntityClientWithBodyWithParams<
 > extends EndpointClient {
     async fetch(id: ID, params: QueryParamsType, data: QueryBodyType): Promise<ApiResponse<ApiReturnType>> {
         return fetchFromApi<ApiReturnType>(this.request(id, params, data));
+    }
+
+    request: RequestBuilderWithIdWithBodyWithParams<QueryParamsType, QueryBodyType, ID> =
+        (id: ID, params: {[key in keyof QueryParamsType]?: string}, data: QueryBodyType) => {
+            return updateEntityRequest(this.url, id, data, params);
+        } 
+}
+
+export class UpdateEntityClientWithAuthWithBodyWithParams<
+    ApiReturnType extends Object | null,
+    QueryParamsType extends {[key: string]: string},
+    QueryBodyType extends Object,
+    ID = number,
+> extends EndpointClient {
+    async fetch(
+        setLoggedOutFunction: () => void,
+        id: ID,
+        params: QueryParamsType,
+        data: QueryBodyType
+    ): Promise<ApiResponse<ApiReturnType>> {
+        return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request(id, params, data));
     }
 
     request: RequestBuilderWithIdWithBodyWithParams<QueryParamsType, QueryBodyType, ID> =
