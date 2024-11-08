@@ -1,12 +1,23 @@
 import { ApiResponse } from "exprest-shared";
-import { configuration } from "./configuration.js";
 
-export async function fetchFromApi<T>(request: Request, options?: RequestInit) : Promise<ApiResponse<T>> {
+export async function fetchFromApi<T>(
+    request: Request,
+    options?: RequestInit,
+) : Promise<ApiResponse<T>> {
+    return fetchFromApiWithAuth(() => {}, request, options);
+}
+
+export async function fetchFromApiWithAuth<T>(
+    setLoggedOutFunction: () => void,
+    request: Request,
+    options?: RequestInit,
+) : Promise<ApiResponse<T>> {
     try {
         const response = await fetch(request, options);
         
         if (response.status === 401) {
-            configuration.setLoggedOut();
+            setLoggedOutFunction();
+            return {isOk: false, status: 401};
         }
 
         // we use the return type of the function
