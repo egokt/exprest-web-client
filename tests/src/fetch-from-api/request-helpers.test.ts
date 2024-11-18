@@ -1,42 +1,46 @@
 import { buildUrl, createRequest, deleteEntityRequest, deleteRequest, deleteSingletonRequest, getCollectionRequest, getEntityRequest, getRequest, getSingletonRequest, HttpQueryType, postRequest, putRequest, request, updateEntityRequest, updateSingletonRequest } from "../../../src/fetch-from-api/request-helpers";
+// @ts-ignore
+import { Request } from "whatwg-fetch";
 
 describe("request method", () => {
     it("should return a request object with just the url", () => {
         const requestVal = request({ url: "http://example.com.local" });
         expect(requestVal.method).toBe(HttpQueryType.get);
-        expect(requestVal.body).toBeNull();
+        expect(requestVal.body).toBeUndefined();
     });
 
     it("should return an empty object body if not provided with put", async () => {
-        const requestVal = request({ url: "http://example.com.local", method: HttpQueryType.put });
-        expect(requestVal.body).toBeDefined();
-        if (requestVal.body) {
-            expect(JSON.parse((await streamToString(requestVal.body)))).toStrictEqual({});
-        }
+        const requestVal =
+            request({ url: "http://example.com.local", method: HttpQueryType.put }) as unknown as Request;
+        expect(requestVal["_bodyText"]).toBeDefined();
+        expect(JSON.parse(requestVal["_bodyText"])).toStrictEqual({});
     });
 
     it("should return an empty object body if not provided with post", async () => {
-        const requestVal = request({ url: "http://example.com.local", method: HttpQueryType.post });
-        expect(requestVal.body).toBeDefined();
-        if (requestVal.body) {
-            expect(JSON.parse((await streamToString(requestVal.body)))).toStrictEqual({});
-        }
+        const requestVal =
+            request({ url: "http://example.com.local", method: HttpQueryType.post }) as unknown as Request;
+        expect(requestVal["_bodyText"]).toBeDefined();
+        expect(JSON.parse(requestVal["_bodyText"])).toStrictEqual({});
     });
 
     it("should return a request object with a body if provided with put", async () => {
-        const requestVal = request({ url: "http://example.com.local", method: HttpQueryType.put, body: { a: 1 } });
-        expect(requestVal.body).toBeDefined();
-        if (requestVal.body) {
-            expect(JSON.parse((await streamToString(requestVal.body)))).toStrictEqual({ a: 1 });
-        }
+        const requestVal = request({
+            url: "http://example.com.local",
+            method: HttpQueryType.put,
+            body: { a: 1 }
+        }) as unknown as Request;
+        expect(requestVal["_bodyText"]).toBeDefined();
+        expect(JSON.parse(requestVal["_bodyText"])).toStrictEqual({ a: 1 });
     });
 
     it("should return a request object with a body if provided with post", async () => {
-        const requestVal = request({ url: "http://example.com.local", method: HttpQueryType.post, body: { a: 1 } });
-        expect(requestVal.body).toBeDefined();
-        if (requestVal.body) {
-            expect(JSON.parse((await streamToString(requestVal.body)))).toStrictEqual({ a: 1 });
-        }
+        const requestVal = request({
+            url: "http://example.com.local",
+            method: HttpQueryType.post,
+            body: { a: 1 }
+        }) as unknown as Request;
+        expect(requestVal["_bodyText"]).toBeDefined();
+        expect(JSON.parse(requestVal["_bodyText"])).toStrictEqual({ a: 1 });
     });
 });
 
@@ -83,11 +87,9 @@ describe("postRequest method", () => {
     });
 
     it("should return a request object with the url and data", async () => {
-        const requestVal = postRequest({ url: "http://example.com.local", data: { a: 1 } });
-        expect(requestVal.body).toBeDefined();
-        if (requestVal.body) {
-            expect(JSON.parse((await streamToString(requestVal.body)))).toStrictEqual({ a: 1 });
-        }
+        const requestVal = postRequest({ url: "http://example.com.local", data: { a: 1 } }) as unknown as Request;
+        expect(requestVal["_bodyText"]).toBeDefined();
+        expect(JSON.parse(requestVal["_bodyText"])).toStrictEqual({ a: 1 });
     });
 });
 
@@ -104,11 +106,9 @@ describe("putRequest method", () => {
     });
 
     it("should return a request object with the url and data", async () => {
-        const requestVal = putRequest({ url: "http://example.com.local", data: { a: 1 } });
-        expect(requestVal.body).toBeDefined();
-        if (requestVal.body) {
-            expect(JSON.parse((await streamToString(requestVal.body)))).toStrictEqual({ a: 1 });
-        }
+        const requestVal = putRequest({ url: "http://example.com.local", data: { a: 1 } }) as unknown as Request;
+        expect(requestVal["_bodyText"]).toBeDefined();
+        expect(JSON.parse(requestVal["_bodyText"])).toStrictEqual({ a: 1 });
     });
 });
 
@@ -177,11 +177,9 @@ describe("createRequest method", () => {
     });
 
     it("should return a request object with the url and data", async () => {
-        const requestVal = createRequest("http://example.com.local", { a: 1 });
-        expect(requestVal.body).toBeDefined();
-        if (requestVal.body) {
-            expect(JSON.parse((await streamToString(requestVal.body)))).toStrictEqual({ a: 1 });
-        }
+        const requestVal = createRequest("http://example.com.local", { a: 1 }) as unknown as Request;
+        expect(requestVal["_bodyText"]).toBeDefined();
+        expect(JSON.parse(requestVal["_bodyText"])).toStrictEqual({ a: 1 });
     });
 });
 
@@ -198,11 +196,9 @@ describe("updateSingletonRequest method", () => {
     });
 
     it("should return a request object with the url and data", async () => {
-        const requestVal = updateSingletonRequest("http://example.com.local", { a: 1 });
-        expect(requestVal.body).toBeDefined();
-        if (requestVal.body) {
-            expect(JSON.parse((await streamToString(requestVal.body)))).toStrictEqual({ a: 1 });
-        }
+        const requestVal = updateSingletonRequest("http://example.com.local", { a: 1 }) as unknown as Request;
+        expect(requestVal["_bodyText"]).toBeDefined();
+        expect(JSON.parse(requestVal["_bodyText"])).toStrictEqual({ a: 1 });
     });
 });
 
@@ -219,11 +215,9 @@ describe("updateEntityRequest method", () => {
     });
 
     it("should return a request object with the url and data", async () => {
-        const requestVal = updateEntityRequest("http://example.com.local", 1, { a: 1 });
-        expect(requestVal.body).toBeDefined();
-        if (requestVal.body) {
-            expect(JSON.parse((await streamToString(requestVal.body)))).toStrictEqual({ a: 1 });
-        }
+        const requestVal = updateEntityRequest("http://example.com.local", 1, { a: 1 }) as unknown as Request;
+        expect(requestVal["_bodyText"]).toBeDefined();
+        expect(JSON.parse(requestVal["_bodyText"])).toStrictEqual({ a: 1 });
     });
 });
 
@@ -252,20 +246,3 @@ describe("deleteEntityRequest method", () => {
         expect(requestVal.url).toBe("http://example.com.local/1?a=1&b=2");
     });
 });
-
-async function streamToString(stream: ReadableStream): Promise<string> {
-  const reader = stream.getReader();
-  const decoder = new TextDecoder();
-  let result = '';
-  let done = false;
-
-  while (!done) {
-    const { value, done: doneReading } = await reader.read();
-    done = doneReading;
-    if (value) {
-      result += decoder.decode(value, { stream: !done });
-    }
-  }
-
-  return result;
-}
