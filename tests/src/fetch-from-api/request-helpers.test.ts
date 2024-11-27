@@ -127,57 +127,60 @@ describe("deleteRequest method", () => {
 
 describe("getCollectionRequest method", () => {
     it("should return a request object with the url and get method", () => {
-        const requestVal = getCollectionRequest("http://example.com.local");
+        const requestVal = getCollectionRequest({resourceUrl: "http://example.com.local"});
         expect(requestVal.url).toBe("http://example.com.local/");
         expect(requestVal.method).toBe(HttpQueryType.get);
     });
 
     it("should return a request object with the url and query params", () => {
-        const requestVal = getCollectionRequest("http://example.com.local", { a: 1, b: 2 });
+        const requestVal = getCollectionRequest({resourceUrl: "http://example.com.local", queryParams: { a: 1, b: 2 }});
         expect(requestVal.url).toBe("http://example.com.local/?a=1&b=2");
     });
 });
 
 describe("getSingletonRequest method", () => {
     it("should return a request object with the url and get method", () => {
-        const requestVal = getSingletonRequest("http://example.com.local");
+        const requestVal = getSingletonRequest({resourceUrl: "http://example.com.local"});
         expect(requestVal.url).toBe("http://example.com.local/");
         expect(requestVal.method).toBe(HttpQueryType.get);
     });
 
     it("should return a request object with the url and query params", () => {
-        const requestVal = getSingletonRequest("http://example.com.local", { a: 1, b: 2 });
+        const requestVal = getSingletonRequest({resourceUrl: "http://example.com.local", queryParams: { a: 1, b: 2 }});
         expect(requestVal.url).toBe("http://example.com.local/?a=1&b=2");
     });
 });
 
 describe("getEntityRequest method", () => {
     it("should return a request object with the url and get method", () => {
-        const requestVal = getEntityRequest("http://example.com.local", 1);
+        const requestVal = getEntityRequest({collectionUrl: "http://example.com.local", id: 1});
         expect(requestVal.url).toBe("http://example.com.local/1");
         expect(requestVal.method).toBe(HttpQueryType.get);
     });
 
     it("should return a request object with the url and query params", () => {
-        const requestVal = getEntityRequest("http://example.com.local", 1, { a: 1, b: 2 });
+        const requestVal =
+            getEntityRequest({collectionUrl: "http://example.com.local", id: 1, queryParams: { a: 1, b: 2 }});
         expect(requestVal.url).toBe("http://example.com.local/1?a=1&b=2");
     });
 });
 
 describe("createRequest method", () => {
     it("should return a request object with the url and post method", () => {
-        const requestVal = createRequest("http://example.com.local", { a: 1 });
+        const requestVal = createRequest({resourceUrl: "http://example.com.local", data: { a: 1 }});
         expect(requestVal.url).toBe("http://example.com.local/");
         expect(requestVal.method).toBe(HttpQueryType.post);
     });
 
     it("should return a request object with the url and query params", () => {
-        const requestVal = createRequest("http://example.com.local", { a: 1 }, { b: 2 });
+        const requestVal =
+            createRequest({resourceUrl: "http://example.com.local", data: { a: 1 }, queryParams: { b: 2 }});
         expect(requestVal.url).toBe("http://example.com.local/?b=2");
     });
 
     it("should return a request object with the url and data", async () => {
-        const requestVal = createRequest("http://example.com.local", { a: 1 }) as unknown as Request;
+        const requestVal =
+            createRequest({resourceUrl: "http://example.com.local", data: { a: 1 }}) as unknown as Request;
         expect(requestVal["_bodyText"]).toBeDefined();
         expect(JSON.parse(requestVal["_bodyText"])).toStrictEqual({ a: 1 });
     });
@@ -185,18 +188,20 @@ describe("createRequest method", () => {
 
 describe("updateSingletonRequest method", () => {
     it("should return a request object with the url and put method", () => {
-        const requestVal = updateSingletonRequest("http://example.com.local", { a: 1 });
+        const requestVal = updateSingletonRequest({resourceUrl: "http://example.com.local", data: { a: 1 }});
         expect(requestVal.url).toBe("http://example.com.local/");
         expect(requestVal.method).toBe(HttpQueryType.put);
     });
 
     it("should return a request object with the url and query params", () => {
-        const requestVal = updateSingletonRequest("http://example.com.local", { a: 1 }, { b: 2 });
+        const requestVal =
+            updateSingletonRequest({resourceUrl: "http://example.com.local", data: { a: 1 }, queryParams: { b: 2 }});
         expect(requestVal.url).toBe("http://example.com.local/?b=2");
     });
 
     it("should return a request object with the url and data", async () => {
-        const requestVal = updateSingletonRequest("http://example.com.local", { a: 1 }) as unknown as Request;
+        const requestVal =
+            updateSingletonRequest({resourceUrl: "http://example.com.local", data: { a: 1 }}) as unknown as Request;
         expect(requestVal["_bodyText"]).toBeDefined();
         expect(JSON.parse(requestVal["_bodyText"])).toStrictEqual({ a: 1 });
     });
@@ -204,18 +209,22 @@ describe("updateSingletonRequest method", () => {
 
 describe("updateEntityRequest method", () => {
     it("should return a request object with the url and put method", () => {
-        const requestVal = updateEntityRequest("http://example.com.local", 1, { a: 1 });
+        const requestVal = updateEntityRequest({collectionUrl: "http://example.com.local", id: 1, data: { a: 1 }});
         expect(requestVal.url).toBe("http://example.com.local/1");
         expect(requestVal.method).toBe(HttpQueryType.put);
     });
 
     it("should return a request object with the url and query params", () => {
-        const requestVal = updateEntityRequest("http://example.com.local", 1, { a: 1 }, { b: 2 });
+        const requestVal = updateEntityRequest(
+            {collectionUrl: "http://example.com.local", id: 1, data: { a: 1 }, queryParams: { b: 2 }}
+        );
         expect(requestVal.url).toBe("http://example.com.local/1?b=2");
     });
 
     it("should return a request object with the url and data", async () => {
-        const requestVal = updateEntityRequest("http://example.com.local", 1, { a: 1 }) as unknown as Request;
+        const requestVal = updateEntityRequest(
+            {collectionUrl: "http://example.com.local", id: 1, data: { a: 1 }}
+        ) as unknown as Request;
         expect(requestVal["_bodyText"]).toBeDefined();
         expect(JSON.parse(requestVal["_bodyText"])).toStrictEqual({ a: 1 });
     });
@@ -223,26 +232,28 @@ describe("updateEntityRequest method", () => {
 
 describe("deleteSingletonRequest method", () => {
     it("should return a request object with the url and delete method", () => {
-        const requestVal = deleteSingletonRequest("http://example.com.local");
+        const requestVal = deleteSingletonRequest({resourceUrl: "http://example.com.local"});
         expect(requestVal.url).toBe("http://example.com.local/");
         expect(requestVal.method).toBe(HttpQueryType.delete);
     });
 
     it("should return a request object with the url and query params", () => {
-        const requestVal = deleteSingletonRequest("http://example.com.local", { a: 1, b: 2 });
+        const requestVal =
+            deleteSingletonRequest({resourceUrl: "http://example.com.local", queryParams: { a: 1, b: 2 }});
         expect(requestVal.url).toBe("http://example.com.local/?a=1&b=2");
     });
 });
 
 describe("deleteEntityRequest method", () => {
     it("should return a request object with the url and delete method", () => {
-        const requestVal = deleteEntityRequest("http://example.com.local", 1);
+        const requestVal = deleteEntityRequest({collectionUrl: "http://example.com.local", id: 1});
         expect(requestVal.url).toBe("http://example.com.local/1");
         expect(requestVal.method).toBe(HttpQueryType.delete);
     });
 
     it("should return a request object with the url and query params", () => {
-        const requestVal = deleteEntityRequest("http://example.com.local", 1, { a: 1, b: 2 });
+        const requestVal =
+            deleteEntityRequest({collectionUrl: "http://example.com.local", id: 1, queryParams: { a: 1, b: 2 }});
         expect(requestVal.url).toBe("http://example.com.local/1?a=1&b=2");
     });
 });

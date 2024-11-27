@@ -11,14 +11,14 @@ import { updateSingletonRequest } from "../fetch-from-api/request-helpers.js";
 
 export class UpdateSingletonClient<ApiReturnType extends Object | null> extends EndpointClient {
     async fetch(): Promise<ApiResponse<ApiReturnType>> { return fetchFromApi<ApiReturnType>(this.request()); }
-    request: RequestBuilder = () => { return updateSingletonRequest(this.url, {}); } 
+    request: RequestBuilder = () => { return updateSingletonRequest({resourceUrl: this.url, data: {}}); } 
 }
 
 export class UpdateSingletonClientWithAuth<ApiReturnType extends Object | null> extends EndpointClient {
     async fetch(setLoggedOutFunction: () => void): Promise<ApiResponse<ApiReturnType>> {
         return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request());
     }
-    request: RequestBuilder = () => { return updateSingletonRequest(this.url, {}); } 
+    request: RequestBuilder = () => { return updateSingletonRequest({resourceUrl: this.url, data: {}}); } 
 }
 
 export class UpdateSingletonClientWithParams<
@@ -30,7 +30,7 @@ export class UpdateSingletonClientWithParams<
     }
 
     request: RequestBuilderWithParams<QueryParamsType> = (params: {[key in keyof QueryParamsType]?: string}) => {
-        return updateSingletonRequest(this.url, {}, params);
+        return updateSingletonRequest({resourceUrl: this.url, data: {}, queryParams: params});
     } 
 }
 
@@ -46,7 +46,7 @@ export class UpdateSingletonClientWithAuthWithParams<
     }
 
     request: RequestBuilderWithParams<QueryParamsType> = (params: {[key in keyof QueryParamsType]?: string}) => {
-        return updateSingletonRequest(this.url, {}, params);
+        return updateSingletonRequest({resourceUrl: this.url, data: {}, queryParams: params});
     } 
 }
 
@@ -59,7 +59,7 @@ export class UpdateSingletonClientWithBody<
     }
 
     request: RequestBuilderWithBody<QueryBodyType> = (data: QueryBodyType) => {
-        return updateSingletonRequest(this.url, data);
+        return updateSingletonRequest({resourceUrl: this.url, data});
     } 
 }
 
@@ -72,7 +72,7 @@ export class UpdateSingletonClientWithAuthWithBody<
     }
 
     request: RequestBuilderWithBody<QueryBodyType> = (data: QueryBodyType) => {
-        return updateSingletonRequest(this.url, data);
+        return updateSingletonRequest({resourceUrl: this.url, data});
     } 
 }
 
@@ -87,7 +87,7 @@ export class UpdateSingletonClientWithBodyWithParams<
 
     request: RequestBuilderWithBodyWithParams<QueryParamsType, QueryBodyType> =
         (params: {[key in keyof QueryParamsType]?: string}, data: QueryBodyType) => {
-            return updateSingletonRequest(this.url, data, params);
+            return updateSingletonRequest({resourceUrl: this.url, data, queryParams: params});
         } 
 }
 
@@ -106,6 +106,6 @@ export class UpdateSingletonClientWithAuthWithBodyWithParams<
 
     request: RequestBuilderWithBodyWithParams<QueryParamsType, QueryBodyType> =
         (params: {[key in keyof QueryParamsType]?: string}, data: QueryBodyType) => {
-            return updateSingletonRequest(this.url, data, params);
+            return updateSingletonRequest({resourceUrl: this.url, data, queryParams: params});
         } 
 }

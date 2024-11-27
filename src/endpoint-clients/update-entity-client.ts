@@ -11,14 +11,18 @@ import { updateEntityRequest } from "../fetch-from-api/request-helpers.js";
 
 export class UpdateEntityClient<ApiReturnType extends Object | null, ID = number> extends EndpointClient {
     async fetch(id: ID): Promise<ApiResponse<ApiReturnType>> { return fetchFromApi<ApiReturnType>(this.request(id)); }
-    request: RequestBuilderWithId<ID> = (id: ID) => { return updateEntityRequest(this.url, id, {}); } 
+    request: RequestBuilderWithId<ID> = (id: ID) => {
+        return updateEntityRequest({collectionUrl: this.url, id, data: {}});
+    } 
 }
 
 export class UpdateEntityClientWithAuth<ApiReturnType extends Object | null, ID = number> extends EndpointClient {
     async fetch(setLoggedOutFunction: () => void, id: ID): Promise<ApiResponse<ApiReturnType>> {
         return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request(id));
     }
-    request: RequestBuilderWithId<ID> = (id: ID) => { return updateEntityRequest(this.url, id, {}); } 
+    request: RequestBuilderWithId<ID> = (id: ID) => {
+        return updateEntityRequest({collectionUrl: this.url, id, data: {}});
+    } 
 }
 
 export class UpdateEntityClientWithParams<
@@ -32,7 +36,7 @@ export class UpdateEntityClientWithParams<
 
     request: RequestBuilderWithIdWithParams<QueryParamsType, ID> =
         (id: ID, params: {[key in keyof QueryParamsType]?: string}) => {
-            return updateEntityRequest(this.url, id, {}, params);
+            return updateEntityRequest({collectionUrl: this.url, id, data: {}, queryParams: params});
         }
 }
 
@@ -51,7 +55,7 @@ export class UpdateEntityClientWithAuthWithParams<
 
     request: RequestBuilderWithIdWithParams<QueryParamsType, ID> =
         (id: ID, params: {[key in keyof QueryParamsType]?: string}) => {
-            return updateEntityRequest(this.url, id, {}, params);
+            return updateEntityRequest({collectionUrl: this.url, id, data: {}, queryParams: params});
         }
 }
 
@@ -65,7 +69,7 @@ export class UpdateEntityClientWithBody<
     }
 
     request: RequestBuilderWithIdWithBody<QueryBodyType, ID> = (id: ID, data: QueryBodyType) => {
-        return updateEntityRequest(this.url, id, data);
+        return updateEntityRequest({collectionUrl: this.url, id, data});
     } 
 }
 
@@ -83,7 +87,7 @@ export class UpdateEntityClientWithAuthWithBody<
     }
 
     request: RequestBuilderWithIdWithBody<QueryBodyType, ID> = (id: ID, data: QueryBodyType) => {
-        return updateEntityRequest(this.url, id, data);
+        return updateEntityRequest({collectionUrl: this.url, id, data});
     } 
 }
 
@@ -99,7 +103,7 @@ export class UpdateEntityClientWithBodyWithParams<
 
     request: RequestBuilderWithIdWithBodyWithParams<QueryParamsType, QueryBodyType, ID> =
         (id: ID, params: {[key in keyof QueryParamsType]?: string}, data: QueryBodyType) => {
-            return updateEntityRequest(this.url, id, data, params);
+            return updateEntityRequest({collectionUrl: this.url, id, data, queryParams: params});
         } 
 }
 
@@ -120,6 +124,6 @@ export class UpdateEntityClientWithAuthWithBodyWithParams<
 
     request: RequestBuilderWithIdWithBodyWithParams<QueryParamsType, QueryBodyType, ID> =
         (id: ID, params: {[key in keyof QueryParamsType]?: string}, data: QueryBodyType) => {
-            return updateEntityRequest(this.url, id, data, params);
+            return updateEntityRequest({collectionUrl: this.url, id, data, queryParams: params});
         } 
 }

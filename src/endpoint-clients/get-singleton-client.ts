@@ -6,14 +6,14 @@ import { RequestBuilder, RequestBuilderWithParams } from "../request-types.js";
 
 export class GetSingletonClient<ApiReturnType extends Object> extends EndpointClient {
     async fetch(): Promise<ApiResponse<ApiReturnType>> { return fetchFromApi<ApiReturnType>(this.request()); }
-    request: RequestBuilder = () => { return getSingletonRequest(this.url); } 
+    request: RequestBuilder = () => { return getSingletonRequest({resourceUrl: this.url}); } 
 }
 
 export class GetSingletonClientWithAuth<ApiReturnType extends Object> extends EndpointClient {
     async fetch(setLoggedOutFunction: () => void): Promise<ApiResponse<ApiReturnType>> {
         return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request());
     }
-    request: RequestBuilder = () => { return getSingletonRequest(this.url); } 
+    request: RequestBuilder = () => { return getSingletonRequest({resourceUrl: this.url}); } 
 }
 
 export class GetSingletonClientWithParams<
@@ -25,7 +25,7 @@ export class GetSingletonClientWithParams<
     }
 
     request: RequestBuilderWithParams<QueryParamsType> = (params: {[key in keyof QueryParamsType]?: string}) => {
-        return getSingletonRequest(this.url, params);
+        return getSingletonRequest({resourceUrl: this.url, queryParams: params});
     }
 }
 
@@ -41,6 +41,6 @@ export class GetSingletonClientWithAuthWithParams<
     }
 
     request: RequestBuilderWithParams<QueryParamsType> = (params: {[key in keyof QueryParamsType]?: string}) => {
-        return getSingletonRequest(this.url, params);
+        return getSingletonRequest({resourceUrl: this.url, queryParams: params});
     }
 }

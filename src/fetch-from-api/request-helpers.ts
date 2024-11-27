@@ -1,3 +1,12 @@
+import { CreateRequestBuilderProps } from "exprest-shared";
+import { GetEntityRequestBuilderProps } from "exprest-shared";
+import { DeleteEntityRequestBuilderProps } from "exprest-shared";
+import { DeleteSingletonRequestBuilderProps } from "exprest-shared";
+import { UpdateEntityRequestBuilderProps } from "exprest-shared";
+import { UpdateSingletonRequestBuilderProps } from "exprest-shared";
+import { GetCollectionRequestBuilderProps } from "exprest-shared";
+import { ActionRequestBuilderProps } from "exprest-shared";
+
 export enum HttpQueryType {
     get = 'GET',
     post = 'POST',
@@ -48,20 +57,35 @@ export function deleteRequest({url, queryParams = {}} : {url: string, queryParam
 }
 
 /**
- * Returns a get request for a collection resource (i.e. a getAll query).
+ * Returns a request for an action.
  * 
- * @param Url Url of the collection resource.
+ * @param resourceUrl Url of the resource.
+ * @param actionName Name of the action.
+ * @param data Data to send in the request body.
  * @param queryParams Query parameters to be appended to the url.
  * @returns Request object that can be used with fetch.
  */
-export function getCollectionRequest(resourceUrl: string, queryParams: Object = {}) {
+export function actionRequest(
+    { url, data, queryParams = {} } : ActionRequestBuilderProps
+): Request {
+    return postRequest({url: buildUrl(url, queryParams), data});
+}
+
+/**
+ * Returns a get request for a collection resource (i.e. a getAll query).
+ * 
+ * @param resourceUrl Url of the collection resource.
+ * @param queryParams Query parameters to be appended to the url.
+ * @returns Request object that can be used with fetch.
+ */
+export function getCollectionRequest({ resourceUrl, queryParams = {}, } : GetCollectionRequestBuilderProps): Request {
     return getRequest({url: buildUrl(resourceUrl, queryParams)});
 }
 
 /**
  * Returns a get request for a singleton resource.
  * 
- * @param Url Url of the singleton resource.
+ * @param resourceUrl Url of the singleton resource.
  * @param queryParams Query parameters to be appended to the url.
  * @returns Request object that can be used with fetch.
  */
@@ -74,7 +98,7 @@ export const getSingletonRequest = getCollectionRequest;
  * @param data Create data (sent as post body).
  * @returns Request object that can be used with fetch.
  */
-export function createRequest(resourceUrl: string, data: any, queryParams: Object = {}) {
+export function createRequest({ resourceUrl, data, queryParams = {}, } : CreateRequestBuilderProps): Request {
     return postRequest({url: buildUrl(resourceUrl, queryParams), data});
 }
 
@@ -85,7 +109,9 @@ export function createRequest(resourceUrl: string, data: any, queryParams: Objec
  * @param data Create data (sent as post body).
  * @returns Request object that can be used with fetch.
  */
-export function updateSingletonRequest(resourceUrl: string, data: any, queryParams: Object = {}) {
+export function updateSingletonRequest(
+    { resourceUrl, data, queryParams = {} } : UpdateSingletonRequestBuilderProps
+): Request {
     return putRequest({url: buildUrl(resourceUrl, queryParams), data});
 }
 
@@ -97,7 +123,9 @@ export function updateSingletonRequest(resourceUrl: string, data: any, queryPara
  * @param queryParams Query parameters to be appended to the url.
  * @returns Request object that can be used with fetch.
  */
-export function getEntityRequest<ID = number>(collectionUrl: string, id: ID, queryParams: Object = {}) {
+export function getEntityRequest<ID = number>(
+    { collectionUrl, id, queryParams = {} }: GetEntityRequestBuilderProps<ID>
+): Request {
     return getRequest({url: buildUrl(`${collectionUrl}/${id}`, queryParams)});
 }
 
@@ -110,7 +138,9 @@ export function getEntityRequest<ID = number>(collectionUrl: string, id: ID, que
  * @param queryParams Request object that can be used with fetch.
  * @returns Request object that can be used with fetch.
  */
-export function updateEntityRequest<ID = number>(collectionUrl: string, id: ID, data: Object, queryParams: Object = {}) {
+export function updateEntityRequest<ID = number>(
+    { collectionUrl, id, data, queryParams = {} }: UpdateEntityRequestBuilderProps<ID>
+): Request {
     return putRequest({url: buildUrl(`${collectionUrl}/${id}`, queryParams), data});
 }
 
@@ -122,7 +152,9 @@ export function updateEntityRequest<ID = number>(collectionUrl: string, id: ID, 
  * @param queryParams Request object that can be used with fetch.
  * @returns Request object that can be used with fetch.
  */
-export function deleteEntityRequest<ID = number>(collectionUrl: string, id: ID, queryParams: Object = {}) {
+export function deleteEntityRequest<ID = number>(
+    { collectionUrl, id, queryParams = {} }: DeleteEntityRequestBuilderProps<ID>
+): Request {
     return deleteRequest({url: buildUrl(`${collectionUrl}/${id}`, queryParams)});
 }
 
@@ -133,7 +165,7 @@ export function deleteEntityRequest<ID = number>(collectionUrl: string, id: ID, 
  * @param queryParams Request object that can be used with fetch.
  * @returns Request object that can be used with fetch.
  */
-export function deleteSingletonRequest(resourceUrl: string, queryParams: Object = {}) {
+export function deleteSingletonRequest({ resourceUrl, queryParams = {} }: DeleteSingletonRequestBuilderProps): Request {
     return deleteRequest({url: buildUrl(resourceUrl, queryParams)});
 }
 
