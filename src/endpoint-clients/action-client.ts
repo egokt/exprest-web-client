@@ -7,18 +7,18 @@ import {
     RequestBuilderWithBodyWithParams,
     RequestBuilderWithParams
 } from "../request-types.js";
-import { postRequest } from "../fetch-from-api/request-helpers.js";
+import { actionRequest } from "../fetch-from-api/request-helpers.js";
 
 export class ActionClient<ApiReturnType extends Object | null> extends EndpointClient {
     async fetch(): Promise<ApiResponse<ApiReturnType>> { return fetchFromApi<ApiReturnType>(this.request()); }
-    request: RequestBuilder = () => { return postRequest({ url: this.url }); } 
+    request: RequestBuilder = () => { return actionRequest({ url: this.url }); } 
 }
 
 export class ActionClientWithAuth<ApiReturnType extends Object | null> extends EndpointClient {
     async fetch(setLoggedOutFunction: () => void): Promise<ApiResponse<ApiReturnType>> {
         return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request());
     }
-    request: RequestBuilder = () => { return postRequest({ url: this.url }); } 
+    request: RequestBuilder = () => { return actionRequest({ url: this.url }); } 
 }
 
 export class ActionClientWithParams<
@@ -30,7 +30,7 @@ export class ActionClientWithParams<
     }
 
     request: RequestBuilderWithParams<QueryParamsType> = (params: {[key in keyof QueryParamsType]?: string}) => {
-        return postRequest({ url: this.url, queryParams: params });
+        return actionRequest({ url: this.url, queryParams: params });
     } 
 }
 
@@ -46,7 +46,7 @@ export class ActionClientWithAuthWithParams<
     }
 
     request: RequestBuilderWithParams<QueryParamsType> = (params: {[key in keyof QueryParamsType]?: string}) => {
-        return postRequest({ url: this.url, queryParams: params });
+        return actionRequest({ url: this.url, queryParams: params });
     } 
 }
 
@@ -59,7 +59,7 @@ export class ActionClientWithBody<
     }
 
     request: RequestBuilderWithBody<QueryBodyType> = (data: QueryBodyType) => {
-        return postRequest({ url: this.url, data });
+        return actionRequest({ url: this.url, data });
     } 
 }
 
@@ -75,7 +75,7 @@ export class ActionClientWithAuthWithBody<
     }
 
     request: RequestBuilderWithBody<QueryBodyType> = (data: QueryBodyType) => {
-        return postRequest({ url: this.url, data });
+        return actionRequest({ url: this.url, data });
     } 
 }
 
@@ -91,7 +91,7 @@ export class ActionClientWithBodyWithParams<
 
     request: RequestBuilderWithBodyWithParams<QueryParamsType, QueryBodyType> =
         (params: {[key in keyof QueryParamsType]?: string}, data: QueryBodyType) => {
-            return postRequest({ url: this.url, data, queryParams: params });
+            return actionRequest({ url: this.url, data, queryParams: params });
         } 
 }
 
@@ -110,6 +110,6 @@ export class ActionClientWithAuthWithBodyWithParams<
 
     request: RequestBuilderWithBodyWithParams<QueryParamsType, QueryBodyType> =
         (params: {[key in keyof QueryParamsType]?: string}, data: QueryBodyType) => {
-            return postRequest({ url: this.url, data, queryParams: params });
+            return actionRequest({ url: this.url, data, queryParams: params });
         } 
 }

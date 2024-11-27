@@ -6,14 +6,14 @@ import { RequestBuilderWithId, RequestBuilderWithIdWithParams } from "../request
 
 export class GetEntityClient<ApiReturnType extends Object, ID = number> extends EndpointClient {
     async fetch(id: ID): Promise<ApiResponse<ApiReturnType>> { return fetchFromApi<ApiReturnType>(this.request(id)); }
-    request: RequestBuilderWithId<ID> = (id: ID) => { return getEntityRequest<ID>(this.url, id); } 
+    request: RequestBuilderWithId<ID> = (id: ID) => { return getEntityRequest<ID>({collectionUrl: this.url, id}); } 
 }
 
 export class GetEntityClientWithAuth<ApiReturnType extends Object, ID = number> extends EndpointClient {
     async fetch(setLoggedOutFunction: () => void, id: ID): Promise<ApiResponse<ApiReturnType>> {
         return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request(id));
     }
-    request: RequestBuilderWithId<ID> = (id: ID) => { return getEntityRequest<ID>(this.url, id); } 
+    request: RequestBuilderWithId<ID> = (id: ID) => { return getEntityRequest<ID>({collectionUrl: this.url, id}); } 
 }
 
 export class GetEntityClientWithParams<
@@ -27,7 +27,7 @@ export class GetEntityClientWithParams<
 
     request: RequestBuilderWithIdWithParams<QueryParamsType, ID> =
         (id: ID, params: {[key in keyof QueryParamsType]?: string}) => {
-            return getEntityRequest(this.url, id, params);
+            return getEntityRequest({collectionUrl: this.url, id, queryParams: params});
         }
 }
 
@@ -46,6 +46,6 @@ export class GetEntityClientWithAuthWithParams<
 
     request: RequestBuilderWithIdWithParams<QueryParamsType, ID> =
         (id: ID, params: {[key in keyof QueryParamsType]?: string}) => {
-            return getEntityRequest(this.url, id, params);
+            return getEntityRequest({collectionUrl: this.url, id, queryParams: params});
         }
 }

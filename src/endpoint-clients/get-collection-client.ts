@@ -6,14 +6,14 @@ import { RequestBuilder, RequestBuilderWithParams } from "../request-types.js";
 
 export class GetCollectionClient<ApiReturnType extends Object> extends EndpointClient {
     async fetch(): Promise<ApiResponse<ApiReturnType>> { return fetchFromApi<ApiReturnType>(this.request()); }
-    request: RequestBuilder = () => { return getCollectionRequest(this.url); } 
+    request: RequestBuilder = () => { return getCollectionRequest({resourceUrl: this.url}); } 
 }
 
 export class GetCollectionClientWithAuth<ApiReturnType extends Object> extends EndpointClient {
     async fetch(setLoggedOutFunction: () => void): Promise<ApiResponse<ApiReturnType>> {
         return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request());
     }
-    request: RequestBuilder = () => { return getCollectionRequest(this.url); } 
+    request: RequestBuilder = () => { return getCollectionRequest({resourceUrl: this.url}); } 
 }
 
 export class GetCollectionClientWithParams<
@@ -25,7 +25,7 @@ export class GetCollectionClientWithParams<
     }
 
     request: RequestBuilderWithParams<QueryParamsType> = (params: {[key in keyof QueryParamsType]?: string}) => {
-        return getCollectionRequest(this.url, params);
+        return getCollectionRequest({resourceUrl: this.url, queryParams: params});
     }
 }
 
@@ -41,6 +41,6 @@ export class GetCollectionClientWithAuthWithParams<
     }
 
     request: RequestBuilderWithParams<QueryParamsType> = (params: {[key in keyof QueryParamsType]?: string}) => {
-        return getCollectionRequest(this.url, params);
+        return getCollectionRequest({resourceUrl: this.url, queryParams: params});
     }
 }

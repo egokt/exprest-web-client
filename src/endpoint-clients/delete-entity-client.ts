@@ -6,14 +6,14 @@ import { RequestBuilderWithId, RequestBuilderWithIdWithParams } from "../request
 
 export class DeleteEntityClient<ApiReturnType extends Object, ID = number> extends EndpointClient {
     async fetch(id: ID): Promise<ApiResponse<ApiReturnType>> { return fetchFromApi<ApiReturnType>(this.request(id)); }
-    request: RequestBuilderWithId<ID> = (id: ID) => { return deleteEntityRequest<ID>(this.url, id); } 
+    request: RequestBuilderWithId<ID> = (id: ID) => { return deleteEntityRequest<ID>({collectionUrl: this.url, id}); } 
 }
 
 export class DeleteEntityClientWithAuth<ApiReturnType extends Object, ID = number> extends EndpointClient {
     async fetch(setLoggedOutFunction: () => void, id: ID): Promise<ApiResponse<ApiReturnType>> {
         return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request(id));
     }
-    request: RequestBuilderWithId<ID> = (id: ID) => { return deleteEntityRequest<ID>(this.url, id); } 
+    request: RequestBuilderWithId<ID> = (id: ID) => { return deleteEntityRequest<ID>({collectionUrl: this.url, id}); } 
 }
 
 export class DeleteEntityClientWithParams<
@@ -27,7 +27,7 @@ export class DeleteEntityClientWithParams<
 
     request: RequestBuilderWithIdWithParams<QueryParamsType, ID> =
         (id: ID, params: {[key in keyof QueryParamsType]?: string}) => {
-            return deleteEntityRequest(this.url, id, params);
+            return deleteEntityRequest({collectionUrl: this.url, id, queryParams: params});
         }
 }
 
@@ -46,6 +46,6 @@ export class DeleteEntityClientWithAuthWithParams<
 
     request: RequestBuilderWithIdWithParams<QueryParamsType, ID> =
         (id: ID, params: {[key in keyof QueryParamsType]?: string}) => {
-            return deleteEntityRequest(this.url, id, params);
+            return deleteEntityRequest({collectionUrl: this.url, id, queryParams: params});
         }
 }

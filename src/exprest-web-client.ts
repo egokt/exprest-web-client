@@ -1,5 +1,5 @@
 export { useApi } from "./fetch-from-api/use-api.js";
-export { fetchFromApi } from "./fetch-from-api/fetch-helpers.js";
+export { fetchFromApi, fetchFromApiWithAuth } from "./fetch-from-api/fetch-helpers.js";
 export {
     request,
     postRequest,
@@ -13,6 +13,7 @@ export {
     getEntityRequest,
     updateEntityRequest,
     deleteEntityRequest,
+    actionRequest,
     buildUrl,
 } from "./fetch-from-api/request-helpers.js";
 

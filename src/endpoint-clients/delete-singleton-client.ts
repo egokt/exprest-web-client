@@ -6,14 +6,14 @@ import { RequestBuilder, RequestBuilderWithParams } from "../request-types.js";
 
 export class DeleteSingletonClient<ApiReturnType extends Object> extends EndpointClient {
     async fetch(): Promise<ApiResponse<ApiReturnType>> { return fetchFromApi<ApiReturnType>(this.request()); }
-    request: RequestBuilder = () => { return deleteSingletonRequest(this.url); } 
+    request: RequestBuilder = () => { return deleteSingletonRequest({resourceUrl: this.url}); } 
 }
 
 export class DeleteSingletonClientWithAuth<ApiReturnType extends Object> extends EndpointClient {
     async fetch(setLoggedOutFunction: () => void): Promise<ApiResponse<ApiReturnType>> {
         return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request());
     }
-    request: RequestBuilder = () => { return deleteSingletonRequest(this.url); } 
+    request: RequestBuilder = () => { return deleteSingletonRequest({resourceUrl: this.url}); } 
 }
 
 export class DeleteSingletonClientWithParams<
@@ -25,7 +25,9 @@ export class DeleteSingletonClientWithParams<
     }
 
     request: RequestBuilderWithParams<QueryParamsType> =
-        (params: {[key in keyof QueryParamsType]?: string}) => { return deleteSingletonRequest(this.url, params); }
+        (params: {[key in keyof QueryParamsType]?: string}) => {
+            return deleteSingletonRequest({resourceUrl: this.url, queryParams: params});
+        }
 }
 
 export class DeleteSingletonClientWithAuthWithParams<
@@ -40,5 +42,7 @@ export class DeleteSingletonClientWithAuthWithParams<
     }
 
     request: RequestBuilderWithParams<QueryParamsType> =
-        (params: {[key in keyof QueryParamsType]?: string}) => { return deleteSingletonRequest(this.url, params); }
+        (params: {[key in keyof QueryParamsType]?: string}) => {
+            return deleteSingletonRequest({resourceUrl: this.url, queryParams: params});
+        }
 }

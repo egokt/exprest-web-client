@@ -11,14 +11,14 @@ import { createRequest } from "../fetch-from-api/request-helpers.js";
 
 export class CreateClient<ApiReturnType extends Object | null> extends EndpointClient {
     async fetch(): Promise<ApiResponse<ApiReturnType>> { return fetchFromApi<ApiReturnType>(this.request()); }
-    request: RequestBuilder = () => { return createRequest(this.url, {}); } 
+    request: RequestBuilder = () => { return createRequest({resourceUrl: this.url, data: {}}); } 
 }
 
 export class CreateClientWithAuth<ApiReturnType extends Object | null> extends EndpointClient {
     async fetch(setLoggedOutFunction: () => void): Promise<ApiResponse<ApiReturnType>> {
         return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request());
     }
-    request: RequestBuilder = () => { return createRequest(this.url, {}); } 
+    request: RequestBuilder = () => { return createRequest({resourceUrl: this.url, data: {}}); } 
 }
 
 export class CreateClientWithParams<
@@ -30,7 +30,7 @@ export class CreateClientWithParams<
     }
 
     request: RequestBuilderWithParams<QueryParamsType> = (params: {[key in keyof QueryParamsType]?: string}) => {
-        return createRequest(this.url, {}, params);
+        return createRequest({resourceUrl: this.url, data: {}, queryParams: params});
     } 
 }
 
@@ -46,7 +46,7 @@ export class CreateClientWithAuthWithParams<
     }
 
     request: RequestBuilderWithParams<QueryParamsType> = (params: {[key in keyof QueryParamsType]?: string}) => {
-        return createRequest(this.url, {}, params);
+        return createRequest({resourceUrl: this.url, data: {}, queryParams: params});
     } 
 }
 
@@ -59,7 +59,8 @@ export class CreateClientWithBody<
         return fetchFromApi<ApiReturnType>(this.request(data));
     }
 
-    request: RequestBuilderWithBody<QueryBodyType> = (data: QueryBodyType) => { return createRequest(this.url, data); } 
+    request: RequestBuilderWithBody<QueryBodyType> =
+        (data: QueryBodyType) => { return createRequest({resourceUrl: this.url, data}); } 
 }
 
 export class CreateClientWithAuthWithBody<
@@ -73,7 +74,8 @@ export class CreateClientWithAuthWithBody<
         return fetchFromApiWithAuth<ApiReturnType>(setLoggedOutFunction, this.request(data));
     }
 
-    request: RequestBuilderWithBody<QueryBodyType> = (data: QueryBodyType) => { return createRequest(this.url, data); } 
+    request: RequestBuilderWithBody<QueryBodyType> =
+        (data: QueryBodyType) => { return createRequest({resourceUrl: this.url, data}); } 
 }
 
 export class CreateClientWithBodyWithParams<
@@ -87,7 +89,7 @@ export class CreateClientWithBodyWithParams<
 
     request: RequestBuilderWithBodyWithParams<QueryParamsType, QueryBodyType> =
         (params: {[key in keyof QueryParamsType]?: string}, data: QueryBodyType) => {
-            return createRequest(this.url, data, params);
+            return createRequest({resourceUrl: this.url, data, queryParams: params});
         } 
 }
 
@@ -106,6 +108,6 @@ export class CreateClientWithAuthWithBodyWithParams<
 
     request: RequestBuilderWithBodyWithParams<QueryParamsType, QueryBodyType> =
         (params: {[key in keyof QueryParamsType]?: string}, data: QueryBodyType) => {
-            return createRequest(this.url, data, params);
+            return createRequest({resourceUrl: this.url, data, queryParams: params});
         } 
 }
