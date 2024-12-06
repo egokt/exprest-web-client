@@ -18,8 +18,9 @@ type HttpQueryTypeValues = `${HttpQueryType}`;
 export function request({
     url,
     method = HttpQueryType.get,
-    body = undefined
-} : { url: string, method?: HttpQueryType, body?: any }): Request {
+    body = undefined,
+    headers = {},
+} : { url: string, method?: HttpQueryType, body?: any, headers?: {[key: string]: string} }): Request {
     if (!Object.values<HttpQueryTypeValues>(HttpQueryType).includes(method)) {
         throw new RangeError(`method parameter must be one of the following: ${Object.values(HttpQueryType).join(', ')}`);
     }
@@ -27,6 +28,7 @@ export function request({
     const requestParams: RequestInit = {
         method: method,
         headers: new Headers({
+            ...headers,
             'Content-Type': 'application/json'
         }),
     }
@@ -40,20 +42,32 @@ export function request({
     return new Request(url, requestParams);
 }
 
-export function postRequest({url, data, queryParams = {}} : {url: string, data?: any, queryParams?: Object}): Request {
-    return request({url: buildUrl(url, queryParams), method: HttpQueryType.post, body: data});
+export function postRequest(
+    {url, data, queryParams = {}, headers = {}}
+    : {url: string, data?: any, queryParams?: Object, headers?: {[key: string]: string}}
+): Request {
+    return request({url: buildUrl(url, queryParams), method: HttpQueryType.post, body: data, headers});
 }
 
-export function getRequest({url, queryParams} : {url: string, queryParams?: Object}): Request {
-    return request({url: buildUrl(url, queryParams)});
+export function getRequest(
+    {url, queryParams, headers}
+    : {url: string, queryParams?: Object, headers?: {[key: string]: string}}
+): Request {
+    return request({url: buildUrl(url, queryParams), headers});
 }
 
-export function putRequest({url, data, queryParams = {}} : {url: string, data?: any, queryParams?: Object}): Request {
-    return request({url: buildUrl(url, queryParams), method: HttpQueryType.put, body: data});
+export function putRequest(
+    {url, data, queryParams = {}, headers = {}}
+    : {url: string, data?: any, queryParams?: Object, headers?: {[key: string]: string}}
+): Request {
+    return request({url: buildUrl(url, queryParams), method: HttpQueryType.put, body: data, headers});
 }
 
-export function deleteRequest({url, queryParams = {}} : {url: string, queryParams?: Object}): Request {
-    return request({url: buildUrl(url, queryParams), method: HttpQueryType.delete});
+export function deleteRequest(
+    {url, queryParams = {}, headers = {}}
+    : {url: string, queryParams?: Object, headers?: {[key: string]: string}}
+): Request {
+    return request({url: buildUrl(url, queryParams), method: HttpQueryType.delete, headers});
 }
 
 /**
@@ -66,9 +80,9 @@ export function deleteRequest({url, queryParams = {}} : {url: string, queryParam
  * @returns Request object that can be used with fetch.
  */
 export function actionRequest(
-    { url, data, queryParams = {} } : ActionRequestBuilderProps
+    { url, data, queryParams = {}, headers = {} } : ActionRequestBuilderProps
 ): Request {
-    return postRequest({url: buildUrl(url, queryParams), data});
+    return postRequest({url: buildUrl(url, queryParams), data, headers});
 }
 
 /**
@@ -78,8 +92,10 @@ export function actionRequest(
  * @param queryParams Query parameters to be appended to the url.
  * @returns Request object that can be used with fetch.
  */
-export function getCollectionRequest({ resourceUrl, queryParams = {}, } : GetCollectionRequestBuilderProps): Request {
-    return getRequest({url: buildUrl(resourceUrl, queryParams)});
+export function getCollectionRequest(
+    { resourceUrl, queryParams = {}, headers = {}} : GetCollectionRequestBuilderProps
+): Request {
+    return getRequest({url: buildUrl(resourceUrl, queryParams), headers});
 }
 
 /**
@@ -98,8 +114,10 @@ export const getSingletonRequest = getCollectionRequest;
  * @param data Create data (sent as post body).
  * @returns Request object that can be used with fetch.
  */
-export function createRequest({ resourceUrl, data, queryParams = {}, } : CreateRequestBuilderProps): Request {
-    return postRequest({url: buildUrl(resourceUrl, queryParams), data});
+export function createRequest(
+    { resourceUrl, data, queryParams = {}, headers = {}} : CreateRequestBuilderProps
+): Request {
+    return postRequest({url: buildUrl(resourceUrl, queryParams), data, headers});
 }
 
 /**
@@ -110,9 +128,9 @@ export function createRequest({ resourceUrl, data, queryParams = {}, } : CreateR
  * @returns Request object that can be used with fetch.
  */
 export function updateSingletonRequest(
-    { resourceUrl, data, queryParams = {} } : UpdateSingletonRequestBuilderProps
+    { resourceUrl, data, queryParams = {}, headers = {} } : UpdateSingletonRequestBuilderProps
 ): Request {
-    return putRequest({url: buildUrl(resourceUrl, queryParams), data});
+    return putRequest({url: buildUrl(resourceUrl, queryParams), data, headers});
 }
 
 /**
@@ -124,9 +142,9 @@ export function updateSingletonRequest(
  * @returns Request object that can be used with fetch.
  */
 export function getEntityRequest<ID = number>(
-    { collectionUrl, id, queryParams = {} }: GetEntityRequestBuilderProps<ID>
+    { collectionUrl, id, queryParams = {}, headers = {} }: GetEntityRequestBuilderProps<ID>
 ): Request {
-    return getRequest({url: buildUrl(`${collectionUrl}/${id}`, queryParams)});
+    return getRequest({url: buildUrl(`${collectionUrl}/${id}`, queryParams), headers});
 }
 
 /**
@@ -139,9 +157,9 @@ export function getEntityRequest<ID = number>(
  * @returns Request object that can be used with fetch.
  */
 export function updateEntityRequest<ID = number>(
-    { collectionUrl, id, data, queryParams = {} }: UpdateEntityRequestBuilderProps<ID>
+    { collectionUrl, id, data, queryParams = {}, headers = {} }: UpdateEntityRequestBuilderProps<ID>
 ): Request {
-    return putRequest({url: buildUrl(`${collectionUrl}/${id}`, queryParams), data});
+    return putRequest({url: buildUrl(`${collectionUrl}/${id}`, queryParams), data, headers});
 }
 
 /**
@@ -153,9 +171,9 @@ export function updateEntityRequest<ID = number>(
  * @returns Request object that can be used with fetch.
  */
 export function deleteEntityRequest<ID = number>(
-    { collectionUrl, id, queryParams = {} }: DeleteEntityRequestBuilderProps<ID>
+    { collectionUrl, id, queryParams = {}, headers = {} }: DeleteEntityRequestBuilderProps<ID>
 ): Request {
-    return deleteRequest({url: buildUrl(`${collectionUrl}/${id}`, queryParams)});
+    return deleteRequest({url: buildUrl(`${collectionUrl}/${id}`, queryParams), headers});
 }
 
 /**
@@ -165,8 +183,10 @@ export function deleteEntityRequest<ID = number>(
  * @param queryParams Request object that can be used with fetch.
  * @returns Request object that can be used with fetch.
  */
-export function deleteSingletonRequest({ resourceUrl, queryParams = {} }: DeleteSingletonRequestBuilderProps): Request {
-    return deleteRequest({url: buildUrl(resourceUrl, queryParams)});
+export function deleteSingletonRequest(
+    { resourceUrl, queryParams = {}, headers = {} }: DeleteSingletonRequestBuilderProps
+): Request {
+    return deleteRequest({url: buildUrl(resourceUrl, queryParams), headers});
 }
 
 /**
