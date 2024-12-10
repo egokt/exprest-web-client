@@ -1,6 +1,6 @@
 {
   "name": "exprest-web-client",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Web client for exprest servers.",
   "main": "exprest-web-client.js",
   "types": "exprest-web-client.d.ts",
@@ -31,6 +31,6 @@
     "whatwg-fetch": "^3.6.20"
   },
   "dependencies": {
-    "exprest-shared": "^1.1.1"
+    "exprest-shared": "^1.1.2"
   }
 }
